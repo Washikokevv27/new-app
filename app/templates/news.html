@@ -1,0 +1,23 @@
+{% extends 'base.html'%}
+{% import 'macros.html' as macro%}
+
+
+{% block styles%}
+
+{{ super() }}
+
+<link rel="stylesheet" href="{{url_for('static',filename='css/index.css')}}">
+{% endblock %}
+
+{% block content %}
+
+<h3 class='jumbotron text-center'>News Highlights </h3>
+<div class='container'>
+    <div class='card'>
+    <div class="card-body" style="background-color:lightcyan;">
+     {{ macro.mylist(data)}}
+    </div>
+    </div>
+</div>
+
+{% endblock%}
