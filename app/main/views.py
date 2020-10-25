@@ -1,46 +1,59 @@
 from flask import render_template,request,redirect,url_for
-from .import main
-from ..request import get_news,get_everything,search_news
+from . import main
+from ..requests import get_sources,get_top_headlines,get_source_news,get_category_news,search_news
 
-#Views
+# Views
 @main.route('/')
 def index():
 
     '''
-    View root page function that returns the index page and it's data
+    View root page function that returns the index page and its data
     '''
+    news_sources = get_sources()
+    top_headlines=get_top_headlines()[0:15]
 
-    # Getting news artiles
-    news_articles = get_everything('article')
-    top_headlines_news = get_everything('headlines')
-    latest_news = get_everything('latest')
+    search_article = request.args.get('news_query')
+    if search_article:
+        return redirect(url_for('.search',news_article=search_article))
+    else:    
+        return render_template('index.html',sources = news_sources,headlines = top_headlines)
 
-    title = 'Home - Welcome to the best news website online'
-    
-    search_news = request.args.get('news_query')
-    
-    if search_news:
-        return redirect(url_for('search',news_name=search_news))
+
+@main.route('/category/<category_name>')
+def category_news(category_name):
+
+    '''
+    View category news page function that returns the category-news page and its data for the category selected
+    '''
+    articles=get_category_news(category_name)
+    if articles:
+        return render_template('category-news.html',category_name=category_name,articles=articles)
     else:
-        return render_template('index.html', title=title, article=news_articles, headlines=top_headlines_news, latest=latest_news)
+        return render_template('errors.html',error='article(s)')           
 
-@main.route('/news/<news_id>')
-def news(news_id):
+
+@main.route('/source/<source_id>')
+def source_news(source_id):
 
     '''
-    View news page function that returns the specific news details page and its data
+    View source news page function that returns the source-news page and its data for the source selected
     '''
-    news = get_news(id)
-    title = f'{news.title}'
-    return render_template('news.html',title=title, news=news)
+    source_articles=get_source_news(source_id)
+    if source_articles:
+        return render_template('source-news.html',articles=source_articles,source=source_id)        
+    else:
+        return render_template('errors.html',error='source articles')
 
-@main.route('/search/<news_name>')
-def search(news_name):
+@main.route('/search/<news_article>')
+def search(news_article):
     '''
     View function to display the search results
     '''
-    news_name_list = news_name.split(" ")
-    news_name_format = "+".join(news_name_list)
-    searched_news = search_news(news_name_format)
-    title = f'search results for {news_name}'
-    return render_template('search.html',news=searched_news)
+    search_news_list = news_article.split(" ")
+    search_news_format = "+".join(search_news_list)
+    searched_news = search_news(search_news_format)
+    title = f'search results for {news_article}'
+    if searched_news:
+        return render_template('search-news.html',title=title,articles = searched_news)    
+    else:
+        return render_template('errors.html',error='searched articles')    

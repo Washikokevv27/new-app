@@ -1,28 +1,41 @@
 import os
 
+
 class Config:
     '''
     General configuration parent class
     '''
-    #NEWS_API_BASE_URL = 'https://newsapi.org/v2/everything?language=en&sources={}&apiKey=18511174a077429aaaeaee76c5574ee9'
-    NEWS_API_BASE_URL ='https://newsapi.org/v2/sources?apiKey={}'
-    ARTICLE_API_BASE_URL = 'https://newsapi.org/v2/everything?sources={}&apiKey={}'
+    NEWS_API_HEADLINES_URL = 'https://newsapi.org/v2/top-headlines?country=us&apiKey={}'
+    NEWS_API_SOURCES_URL = 'https://newsapi.org/v2/sources?apiKey={}'
+    NEWS_API_HEADLINES_BY_SOURCE_URL = 'http://newsapi.org/v2/top-headlines?sources={}&apiKey={}'
+    NEWS_API_HEADLINES_BY_SEARCH_URL = 'http://newsapi.org/v2/top-headlines?q={}&sortBy=publishedAt&apiKey={}'
+    NEWS_API_HEADLINES_BY_CATEGORY_URL = 'http://newsapi.org/v2/top-headlines?country=us&category={}&apiKey={}'
+
     NEWS_API_KEY = os.environ.get('NEWS_API_KEY')
-    SECRET_KEY = os.environ.get('SECRET_KEY')
+
 
 class ProdConfig(Config):
     '''
-    Production configuration child class
+    Production  configuration child class
+
+    Args:
+        Config: The parent configuration class with General configuration settings
     '''
     pass
 
+
 class DevConfig(Config):
     '''
-    Development configuration child class
+    Development  configuration child class
+
+    Args:
+        Config: The parent configuration class with General configuration settings
     '''
+
     DEBUG = True
 
+
 config_options = {
-    'development':DevConfig,
-    'production':ProdConfig
+    'development': DevConfig,
+    'production': ProdConfig
 }

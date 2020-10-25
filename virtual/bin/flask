@@ -1,4 +1,4 @@
-#!/home/moringa/Documents/new-app/virtual/bin/python
+#!/home/user/PYTHON/News-App/virtual/bin/python
 # -*- coding: utf-8 -*-
 import re
 import sys
