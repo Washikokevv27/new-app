@@ -6,8 +6,8 @@
   box-sizing: border-box;
 }
 
-.header {
-  background: #07c9cf;
+header {
+  background: #cf5707;
   min-height: 80vh;
   position: relative;
   width: 100%;
@@ -17,7 +17,7 @@
 }
 
 .header-bg {
-  background: url("../img/bg.jpg")no-repeat center center;
+  background: url("..//img/bg.jpg")no-repeat center center;
   background-size: cover;
 }
 
